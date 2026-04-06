@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "Notification": [
+      {"hooks": [{"type": "command", "command": "$HOME/.claude/hooks/notification.sh"}]}
+    ],
+    "Stop": [
+      {"hooks": [{"type": "command", "command": "$HOME/.claude/hooks/stop.sh"}]}
+    ],
+    "StopFailure": [
+      {"hooks": [{"type": "command", "command": "$HOME/.claude/hooks/stop-failure.sh"}]}
+    ]
+  }
+}

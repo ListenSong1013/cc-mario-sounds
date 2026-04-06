@@ -1,10 +1,12 @@
 # 🍄 CC Mario Sounds
 
-用超级马里奥经典音效为 Claude Code 的每一个操作提供实时声音反馈，让你通过声音感知 AI 的执行状态，无需盯着屏幕。
+用超级马里奥经典音效为 Claude Code / Codex CLI 的关键操作提供实时声音反馈，让你通过声音感知 AI 的执行状态，无需盯着屏幕。
 
 🎵 **[点击试听所有音效](https://listensong1013.github.io/cc-mario-sounds/)**
 
 ## 音效映射
+
+### 完整模式
 
 | 事件 | 音效 | 说明 |
 |------|------|------|
@@ -18,12 +20,21 @@
 | WebSearch 搜网页 | `web_search.wav` | 探索新世界 |
 | WebFetch 抓内容 | `web_fetch.wav` | 取回宝物 |
 | 权限请求 | `smb_warning.wav` | 前方有危险 |
-| 吃蘑菇提示 | `powerup.wav` | 道具变身 |
 | 空闲提示 | `1up.wav` | 额外生命 |
 | 会话启动 | `smb_pipe.wav` | 钻进传送管 |
 | 任务完成 | `smb_world_clear.wav` | 通关！ |
 | 执行失败 | `smb_warning.wav` | 危险警告 |
-| 工具报错 | `smb_warning.wav` | 危险警告 |
+
+### 精简模式（推荐）
+
+只在需要你关注的时刻响声，其余操作静默。
+
+| 事件 | 音效 | 说明 |
+|------|------|------|
+| 权限请求 | `smb_warning.wav` | 需要你拍板 |
+| 空闲提示 | `1up.wav` | 叫你回来看 |
+| 任务完成 | `smb_world_clear.wav` | 通关！ |
+| 执行失败 | `smb_warning.wav` | 出问题了 |
 
 ## 快速安装
 
@@ -32,7 +43,7 @@
 #### 1. 克隆仓库
 
 ```bash
-git clone https://github.com/your-username/cc-mario-sounds.git
+git clone https://github.com/ListenSong1013/cc-mario-sounds.git
 cd cc-mario-sounds
 ```
 
@@ -46,17 +57,21 @@ chmod +x ~/.claude/hooks/*.sh
 
 #### 3. 配置 Claude Code
 
-将 `examples/settings.json` 中的内容合并到 `~/.claude/settings.json`。
+**精简模式**（推荐）：将 `examples/settings-minimal.json` 合并到 `~/.claude/settings.json`。
+
+**完整模式**：使用 `examples/settings.json`。
 
 #### 4. 重新开启一个 Session
 
-新建 session 后即可生效，听到传送管音效说明安装成功。
+新建 session 后即可生效。
 
 ---
 
 ### Codex CLI
 
 Codex CLI 0.118+ 原生支持 hooks，无需额外工具。
+
+> **前提**：已按上方 Claude Code 步骤安装好 `~/.claude/hooks/`，Codex 直接复用这套脚本。
 
 #### 1. 开启 hooks 功能
 
@@ -69,17 +84,23 @@ codex_hooks = true
 
 #### 2. 配置 hooks
 
-将 `examples/codex-hooks.json` 复制到 `~/.codex/hooks.json`：
+**精简模式**（推荐）：
+
+```bash
+cp examples/codex-hooks-minimal.json ~/.codex/hooks.json
+```
+
+**完整模式**：
 
 ```bash
 cp examples/codex-hooks.json ~/.codex/hooks.json
 ```
 
-> **前提**：已按上方 Claude Code 步骤安装好 `~/.claude/hooks/`，Codex 直接复用这套脚本。
-
 #### 3. 重启 Codex
 
-新开一个 Codex session，执行任意 Bash 命令，听到踢龟壳音效说明生效。
+新开一个 Codex session 即可生效。
+
+> **注意**：Codex CLI 目前没有 Notification 事件，精简模式下只有任务完成和执行失败两个音效。
 
 ## 文件结构
 
@@ -120,8 +141,10 @@ cc-mario-sounds/
 │   ├── stop.sh
 │   └── stop-failure.sh
 └── examples/
-    ├── settings.json            # Claude Code 配置示例
-    └── codex-hooks.json         # Codex CLI 配置示例
+    ├── settings.json            # Claude Code 完整模式配置
+    ├── settings-minimal.json    # Claude Code 精简模式配置（推荐）
+    ├── codex-hooks.json         # Codex CLI 完整模式配置
+    └── codex-hooks-minimal.json # Codex CLI 精简模式配置（推荐）
 ```
 
 ## 自定义音效
