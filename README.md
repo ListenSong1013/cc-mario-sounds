@@ -2,6 +2,8 @@
 
 用超级马里奥经典音效为 Claude Code 的每一个操作提供实时声音反馈，让你通过声音感知 AI 的执行状态，无需盯着屏幕。
 
+🎵 **[点击试听所有音效](https://listensong1013.github.io/cc-mario-sounds/)**
+
 ## 音效映射
 
 | 事件 | 音效 | 说明 |
