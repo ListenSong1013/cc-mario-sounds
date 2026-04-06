@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/hooks/stop.sh"
+            "command": "$HOME/.claude/hooks/play-sound.sh 1up.wav 0.4"
           }
         ]
       }
