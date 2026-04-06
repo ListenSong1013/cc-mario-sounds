@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CC Mario Sounds — 试听</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 48px 24px;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 48px; }
+    header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+    header p { color: #8b949e; font-size: 0.95rem; }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .sound-row {
+      display: grid;
+      grid-template-columns: 1fr 180px 80px;
+      align-items: center;
+      gap: 12px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 12px 16px;
+      transition: border-color 0.15s;
+    }
+    .sound-row:hover { border-color: #58a6ff; }
+
+    .event { font-size: 0.9rem; color: #e6edf3; }
+    .event span { display: block; font-size: 0.75rem; color: #8b949e; margin-top: 2px; }
+
+    .filename {
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: 0.78rem;
+      color: #79c0ff;
+      background: #0d1117;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .play-btn {
+      background: #238636;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .play-btn:hover { background: #2ea043; }
+    .play-btn.playing { background: #b62324; }
+    .play-btn.playing:hover { background: #da3633; }
+
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      color: #8b949e;
+      font-size: 0.82rem;
+    }
+    footer a { color: #58a6ff; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🍄 CC Mario Sounds</h1>
+      <p>Claude Code 操作音效试听 · 点击播放</p>
+    </header>
+
+    <div class="grid" id="grid"></div>
+
+    <footer>
+      <p>
+        <a href="https://github.com/ListenSong1013/cc-mario-sounds-">GitHub 仓库</a>
+        &nbsp;·&nbsp;
+        音效来自超级马里奥系列
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    const sounds = [
+      { event: "会话启动",     desc: "钻进传送管",   file: "smb_pipe.wav" },
+      { event: "Bash 命令",    desc: "踢出龟壳",     file: "smb_kick.wav" },
+      { event: "Read 读文件",  desc: "撞到砖块",     file: "smb_bump.wav" },
+      { event: "Edit 编辑文件",desc: "小跳",         file: "smb_jump-small.wav" },
+      { event: "Write 写文件", desc: "超级大跳",     file: "smb_jump-super.wav" },
+      { event: "Grep 搜索",    desc: "踩扁栗宝宝",   file: "smb_stomp.wav" },
+      { event: "Glob 文件匹配",desc: "扫描地图",     file: "glob_search.wav" },
+      { event: "WebSearch",    desc: "探索新世界",   file: "web_search.wav" },
+      { event: "WebFetch",     desc: "取回宝物",     file: "web_fetch.wav" },
+      { event: "权限请求",     desc: "前方有危险",   file: "smb_warning.wav" },
+      { event: "道具提示",     desc: "变身",         file: "powerup.wav" },
+      { event: "空闲提示",     desc: "额外生命",     file: "1up.wav" },
+      { event: "任务完成",     desc: "通关！",       file: "smb_world_clear.wav" },
+      { event: "执行失败",     desc: "危险警告",     file: "smb_warning.wav" },
+    ];
+
+    let current = null;
+
+    const grid = document.getElementById("grid");
+
+    sounds.forEach(({ event, desc, file }) => {
+      const row = document.createElement("div");
+      row.className = "sound-row";
+
+      const audio = new Audio(`sounds/${file}`);
+      audio.volume = 0.5;
+
+      const btn = document.createElement("button");
+      btn.className = "play-btn";
+      btn.textContent = "▶ 播放";
+
+      audio.addEventListener("ended", () => {
+        btn.textContent = "▶ 播放";
+        btn.classList.remove("playing");
+        current = null;
+      });
+
+      btn.addEventListener("click", () => {
+        if (current && current !== audio) {
+          current.pause();
+          current.currentTime = 0;
+          document.querySelectorAll(".play-btn").forEach(b => {
+            b.textContent = "▶ 播放";
+            b.classList.remove("playing");
+          });
+        }
+        if (btn.classList.contains("playing")) {
+          audio.pause();
+          audio.currentTime = 0;
+          btn.textContent = "▶ 播放";
+          btn.classList.remove("playing");
+          current = null;
+        } else {
+          audio.play();
+          btn.textContent = "■ 停止";
+          btn.classList.add("playing");
+          current = audio;
+        }
+      });
+
+      row.innerHTML = `
+        <div class="event">${event}<span>${desc}</span></div>
+        <div class="filename">${file}</div>
+      `;
+      row.appendChild(btn);
+      grid.appendChild(row);
+    });
+  </script>
+</body>
+</html>
