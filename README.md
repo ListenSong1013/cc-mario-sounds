@@ -27,14 +27,16 @@
 
 ## 快速安装
 
-### 1. 克隆仓库
+### Claude Code
+
+#### 1. 克隆仓库
 
 ```bash
 git clone https://github.com/your-username/cc-mario-sounds.git
 cd cc-mario-sounds
 ```
 
-### 2. 复制 hooks 脚本
+#### 2. 复制 hooks 脚本
 
 ```bash
 mkdir -p ~/.claude/hooks
@@ -42,13 +44,42 @@ cp hooks/*.sh ~/.claude/hooks/
 chmod +x ~/.claude/hooks/*.sh
 ```
 
-### 3. 配置 Claude Code
+#### 3. 配置 Claude Code
 
 将 `examples/settings.json` 中的内容合并到 `~/.claude/settings.json`。
 
-### 4. 重新开启一个 Session
+#### 4. 重新开启一个 Session
 
 新建 session 后即可生效，听到传送管音效说明安装成功。
+
+---
+
+### Codex CLI
+
+Codex CLI 0.118+ 原生支持 hooks，无需额外工具。
+
+#### 1. 开启 hooks 功能
+
+在 `~/.codex/config.toml` 的 `[features]` 段加一行：
+
+```toml
+[features]
+codex_hooks = true
+```
+
+#### 2. 配置 hooks
+
+将 `examples/codex-hooks.json` 复制到 `~/.codex/hooks.json`：
+
+```bash
+cp examples/codex-hooks.json ~/.codex/hooks.json
+```
+
+> **前提**：已按上方 Claude Code 步骤安装好 `~/.claude/hooks/`，Codex 直接复用这套脚本。
+
+#### 3. 重启 Codex
+
+新开一个 Codex session，执行任意 Bash 命令，听到踢龟壳音效说明生效。
 
 ## 文件结构
 
@@ -89,7 +120,8 @@ cc-mario-sounds/
 │   ├── stop.sh
 │   └── stop-failure.sh
 └── examples/
-    └── settings.json            # 配置示例
+    ├── settings.json            # Claude Code 配置示例
+    └── codex-hooks.json         # Codex CLI 配置示例
 ```
 
 ## 自定义音效
