@@ -178,6 +178,21 @@ afplay -v 0.3 sounds/smb_world_clear.wav
 | macOS | `afplay`（支持音量控制） |
 | Linux | `aplay`（优先）或 `paplay` |
 
+## 已知限制
+
+### Codex CLI 缺少 Notification 事件
+
+Codex CLI 目前没有 `Notification` 事件，导致以下两个音效无法在 Codex 中触发：
+
+| 缺失功能 | Claude Code | Codex CLI |
+|----------|------------|-----------|
+| 权限请求提示音 | ✅ | ❌ 暂不支持 |
+| 空闲提示音 | ✅ | ❌ 暂不支持 |
+
+Codex 精简模式目前实际只有 **2 个音效**（任务完成 + 执行失败）。
+
+待 Codex 官方支持 `Notification` 事件后，`codex-hooks-minimal.json` 将同步更新。
+
 ## 许可证
 
 MIT
